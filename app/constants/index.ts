@@ -218,7 +218,7 @@ export const jobs =  [
   },
   {
     "id": 35,
-    "title": "Other",
+    "title": "Other Works",
     "desc": "General Works"
   }
 ]
@@ -241,7 +241,7 @@ export const offDays = [
     },
     {
         id: 3,
-        title: "Other",
+        title: "Shift System",
         desc:"Shift OffDays"
     }
 ]
@@ -398,7 +398,82 @@ export const livingWithWho = [
   },
   {
     id: 4,
-    title:"Other"
+    title:"Others"
   }
 ]
 
+export const bodyType = [
+  {
+    id: 0,
+    title: "Slim"
+  },
+  {
+    id: 1,
+    title:"Slightly thin"
+  },
+  {
+    id: 2,
+    title:"Usually"
+  },
+  {
+    id: 3,
+    title:"Glamour"
+  },
+  {
+    id: 4,
+    title:"Muscular"
+  },
+  {
+    id: 5,
+    title:"Slightly Chubby"
+  },
+  {
+    id: 6,
+    title:"Chubby"
+  }
+]
+
+export const personType = [
+  { id: 1, title: "Helpful" },
+  { id: 2, title: "Creative" },
+  { id: 3, title: "Hardworking" },
+  { id: 4, title: "Reliable" },
+  { id: 5, title: "Funny" },
+  { id: 6, title: "Kind" },
+  { id: 7, title: "Optimistic" },
+  { id: 8, title: "Generous" },
+  { id: 9, title: "Thoughtful" },
+  { id: 10, title: "Intelligent" },
+  { id: 11, title: "Ambitious" },
+  { id: 12, title: "Confident" },
+  { id: 13, title: "Empathetic" },
+  { id: 14, title: "Organized" },
+  { id: 15, title: "Energetic" },
+  { id: 16, title: "Adventurous" },
+  { id: 17, title: "Calm" },
+  { id: 18, title: "Loyal" },
+  { id: 19, title: "Honest" },
+  { id: 20, title: "Open-minded" },
+  { id: 21, title: "Patient" },
+  { id: 22, title: "Caring" },
+  { id: 23, title: "Friendly" },
+  { id: 24, title: "Responsible" },
+  { id: 25, title: "Innovative" },
+  { id: 26, title: "Supportive" },
+  { id: 27, title: "Inspiring" },
+  { id: 28, title: "Trustworthy" },
+  { id: 29, title: "Independent" },
+  { id: 30, title: "Curious" },
+  { id: 31, title: "Pragmatic" },
+  { id: 32, title: "Understanding" },
+  { id: 33, title: "Determined" },
+  { id: 34, title: "Warm" },
+  { id: 35, title: "Optimistic" },
+  { id: 36, title: "Resourceful" },
+  { id: 37, title: "Diplomatic" },
+  { id: 38, title: "Resilient" },
+  { id: 39, title: "Perceptive" },
+  { id: 40, title: "Meticulous" },
+  { id: 41, title: "Passionate" },
+  { id: 42, title: "Compassionate" }
+]

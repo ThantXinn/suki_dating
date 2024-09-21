@@ -1,4 +1,5 @@
 /** @format */
+/** there is a bugs and errors */
 "use client";
 import { holidayActivity } from "@/app/constants";
 import Image from "next/image";
@@ -8,10 +9,13 @@ import { Label } from "./ui/label";
 const HolidayActivity = ({
   selectedItem,
   setSelectedItem,
+  currentStepIndex,
 }: {
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
+  currentStepIndex: number;
 }) => {
+  //console.log(selectedItem.length);
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -19,8 +23,50 @@ const HolidayActivity = ({
     } else {
       setSelectedItem([...selectedItem, value]);
     }
+    if (
+      selectedItem.length >= 4 &&
+      selectedItem.length <= 4 &&
+      currentStepIndex === 2
+    ) {
+      const newItemsUpdate = [
+        ...selectedItem.slice(0, currentStepIndex),
+        ...selectedItem.slice(currentStepIndex + 1),
+      ];
+      //console.log(newItemsUpdate);
+      //if users click back/previous button with respective selected values
+      //check the current page of previous user selected value and get the upate value when user select the item
+      const updateUserClickedItem = value;
+      setSelectedItem([...newItemsUpdate, updateUserClickedItem]);
+      if (isSelected) {
+        setSelectedItem(selectedItem.filter((item) => item !== value));
+      }
+    }
+    if (selectedItem.length >= 5) {
+      //console.log("hi");
+      const getItem = selectedItem[currentStepIndex + 1];
+      //console.log(getItem);
+      const newItemsUpdate = [...selectedItem];
+      newItemsUpdate[currentStepIndex] = getItem;
+      const finalSelectedItems = [...newItemsUpdate];
+      finalSelectedItems[currentStepIndex + 1] = value;
+      //console.log(finalSelectedItems);
+      //console.log(newItemsUpdate);
+      setSelectedItem([...finalSelectedItems]);
+      if (isSelected) {
+        setSelectedItem(selectedItem.filter((item) => item !== value));
+      }
+    } else if (selectedItem.length === 4) {
+      //console.log(selectedItem.length);
+      const getItem = selectedItem[currentStepIndex + 1];
+      //console.log(getItem);
+      const updateItem = [...selectedItem];
+      updateItem[currentStepIndex + 1] = value;
+      const finalSelectedItems = [...updateItem, getItem];
+      //console.log(finalSelectedItems);
+      setSelectedItem([...finalSelectedItems]);
+    }
   };
-
+  //console.log(selectedItem);
   return (
     <div className='flex flex-col items-center'>
       <div className='sticky top-0 bg-slate-50 w-full z-10'>
@@ -28,7 +74,7 @@ const HolidayActivity = ({
           <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
             What do you do on your days off...?
             <span className='text-xs font-light mt-2'>
-              Go to next step by choosing two!
+              You can select only two activities...!
             </span>
           </h1>
         </Label>
@@ -44,9 +90,6 @@ const HolidayActivity = ({
                   ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
                   : "cursor-not-allowed"
               }`}
-              disabled={
-                !selectedItem.includes(title) && selectedItem.length >= 4
-              }
               onClick={() => {
                 handleOnClick(title);
               }}>

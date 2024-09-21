@@ -13,8 +13,7 @@ const OffDayCategory = ({
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
 }) => {
-  //const [tempSelectedItem, setTempSelectedItem] = useState<string>("");
-  //console.log(selectedItem);
+  const currentStepIndex = 2;
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -33,8 +32,22 @@ const OffDayCategory = ({
         setSelectedItem([...selectedItem, value]);
       }
     }
+    if (selectedItem.length > 2) {
+      //if users click back/previous button with respective selected values
+      //check the current page of previous user selected value and get the upate value when user select the item
+      const updateUserClickedItem = value;
+      //const finalUserSelectedItem_ = selectedItem[selectedItem.length - 1];
+      const newItemsUpdate = [...selectedItem];
+
+      //replace final user selected item to previous selected item
+      newItemsUpdate[currentStepIndex - 1] = updateUserClickedItem;
+
+      //after replaced final user selected item to previous selected item
+      //console.log(newItemsUpdate, prevUserClickedItem, updateUserClickedItem);
+      setSelectedItem([...newItemsUpdate]);
+    }
   };
-  //console.log(selectedItem);
+  //console.log(selectedItem, selectedItem.length);
   return (
     <div className='flex flex-col items-center'>
       <div className='sticky top-0 bg-slate-50 w-full'>

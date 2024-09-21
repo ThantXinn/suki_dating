@@ -1,13 +1,26 @@
 /** @format */
 
-import { ChangeEvent, useState } from "react";
+import { bodyType } from "@/app/constants";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-export function Height() {
-  const [firstInput, setFirstInput] = useState<string>("");
-  const [secondInput, setSecondInput] = useState<string>("");
-  const [thirdInput, setThirdInput] = useState<string>("");
+export function Height({
+  firstInput,
+  secondInput,
+  thirdInput,
+  setFirstInput,
+  setSecondInput,
+  setThirdInput,
+}: {
+  firstInput: string;
+  secondInput: string;
+  thirdInput: string;
+  setFirstInput: Dispatch<SetStateAction<string>>;
+  setSecondInput: Dispatch<SetStateAction<string>>;
+  setThirdInput: Dispatch<SetStateAction<string>>;
+}) {
   const [error, setError] = useState<string>("");
   const handleFirstInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -90,7 +103,7 @@ export function Height() {
           value={firstInput}
           onChange={handleFirstInput}
           onBlur={handleFirstInputBlur}
-          className='text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
+          className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
         />
         <Input
           id='input-two'
@@ -100,7 +113,7 @@ export function Height() {
           value={secondInput}
           onChange={handleSecondInput}
           onBlur={handleSecondInputBlur}
-          className='text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
+          className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
         />
         <Input
           id='input-three'
@@ -110,7 +123,7 @@ export function Height() {
           value={thirdInput}
           onChange={handleThirdInput}
           onBlur={handleThirdInputBlur}
-          className='text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
+          className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
         />
 
         <Label
@@ -124,6 +137,59 @@ export function Height() {
   );
 }
 
-export function BodyType() {
-  return <div>Body Type</div>;
+export function BodyType({
+  selectedItem,
+  setSelectedItem,
+  currentStepIndex,
+}: {
+  selectedItem: string[];
+  setSelectedItem: Dispatch<SetStateAction<string[]>>;
+  currentStepIndex: number;
+}) {
+  //console.log(selectedItem.length, selectedItem, currentStepIndex);
+  const handleOnClick = (value: string) => {
+    const isSelected = selectedItem.includes(value);
+    if (isSelected) {
+      setSelectedItem(selectedItem.filter((item) => item !== value));
+    } else {
+      setSelectedItem([...selectedItem, value]);
+    }
+    if (selectedItem.length >= 6 && currentStepIndex === 5) {
+      console.log(selectedItem.length);
+      const newItemsUpdate = [...selectedItem];
+      newItemsUpdate[currentStepIndex] = value;
+      console.log(newItemsUpdate);
+      //setSelectedItem([...newItemsUpdate]);
+    }
+  };
+  return (
+    <div className='flex flex-col items-center'>
+      <div className='sticky top-0 bg-slate-50 w-full z-10'>
+        <Label htmlFor='sub-title'>
+          <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
+            Please choose the one that best suits your body type...
+          </h1>
+        </Label>
+        <hr className='w-full border border-slate-500' />
+      </div>
+      <div className='flex flex-wrap items-center justify-start gap-2 py-5 px-36'>
+        {bodyType.map(({ id, title }) => (
+          <div key={id}>
+            <Button
+              variant={"ghost"}
+              className={`flex items-center p-2 gap-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
+                selectedItem?.includes(title)
+                  ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
+                  : "cursor-not-allowed"
+              }`}
+              onClick={() => {
+                handleOnClick(title);
+              }}>
+              <p className='text-sm'>{title}</p>
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
