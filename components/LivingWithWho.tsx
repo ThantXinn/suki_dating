@@ -72,8 +72,8 @@ const LivingWithWho = ({
   //console.log("after fired click event value", selectedItem);
 
   return (
-    <div className='flex flex-col items-center'>
-      <div className='sticky top-0 bg-slate-50 w-full z-10'>
+    <div className='absolute flex flex-col items-center h-full w-full'>
+      <div className='relative bg-slate-50 w-full'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
             Who are you living with now...?
@@ -81,7 +81,7 @@ const LivingWithWho = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='flex flex-wrap items-center justify-start gap-2 py-5 px-36'>
+      <div className='overflow-scroll flex flex-wrap items-center justify-center gap-2 py-28 px-28 w-full h-full'>
         {livingWithWho.map(({ id, title }) => (
           <div key={id}>
             <Button

@@ -54,8 +54,8 @@ const JobCategory = ({
   };
   //console.log(selectedItem);
   return (
-    <div className='flex flex-col items-center'>
-      <div className='absolute top-5 bg-slate-50 w-full z-10'>
+    <div className='absolute flex flex-col items-center h-full w-full'>
+      <div className='relative bg-slate-50 w-full'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5'>
             What kind of work do you do...?
@@ -63,7 +63,7 @@ const JobCategory = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='relative mt-16 mb-4 bg-slate-50 flex flex-wrap items-center justify-start gap-1 py-5 px-28'>
+      <div className='overflow-scroll bg-slate-50 flex flex-wrap items-center justify-start gap-2 py-3 px-28'>
         {jobs.map(({ id, title, desc }) => (
           <div key={id}>
             <Button

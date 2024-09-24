@@ -60,8 +60,8 @@ const OffDayCategory = ({
   };
   //console.log(selectedItem, selectedItem.length);
   return (
-    <div className='flex flex-col items-center'>
-      <div className='absolute top-5 bg-slate-50 w-full'>
+    <div className='absolute flex flex-col items-center justify-center h-full w-full'>
+      <div className='relative bg-slate-50 w-full'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5'>
             What is your off days...?
@@ -69,7 +69,7 @@ const OffDayCategory = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='relative top-14 flex flex-col items-start justify-center gap-y-3 w-fit py-16 px-36'>
+      <div className='relative flex flex-col items-center justify-center gap-2 w-full py-16 px-36'>
         {offDays.map(({ id, title, desc }) => (
           <div key={id}>
             <Button

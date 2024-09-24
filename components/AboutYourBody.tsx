@@ -91,8 +91,8 @@ export function Height({
     }
   };
   return (
-    <div className='flex flex-col items-center'>
-      <div className='absolute top-5 bg-slate-50 w-full z-10'>
+    <div className='absolute flex flex-col items-center w-full h-full'>
+      <div className='relative bg-slate-50 w-full'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5'>
             What is your height...?
@@ -100,7 +100,7 @@ export function Height({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='relative my-10 bg-slate-50 flex items-center gap-4 py-16 px-36 top-20'>
+      <div className='relative bg-slate-50 flex justify-center items-center gap-4 px-36 w-full h-full'>
         <Input
           id='input-one'
           name='input-one'
@@ -204,8 +204,8 @@ export function BodyType({
     }
   };
   return (
-    <div className='flex flex-col items-center justify-center'>
-      <div className='absolute top-5 bg-slate-50 w-full z-10'>
+    <div className='absolute flex flex-col items-center w-full h-full'>
+      <div className='relative bg-slate-50 w-full z-10'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
             Please choose the one that best suits your body type...
@@ -213,7 +213,7 @@ export function BodyType({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='relative my-20 top-20 bg-slate-50 flex flex-wrap items-center justify-start gap-1 py-5 px-28'>
+      <div className=' bg-slate-50 flex flex-wrap items-center justify-center gap-2 py-24 px-28 w-fit h-full'>
         {bodyType.map(({ id, title }) => (
           <div key={id}>
             <Button

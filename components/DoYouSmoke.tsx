@@ -66,8 +66,8 @@ const DoYouSmoke = ({
   };
   //console.log(selectedItem, selectedItem.length);
   return (
-    <div className='flex flex-col items-center'>
-      <div className='absolute top-5 bg-slate-50 w-full z-10'>
+    <div className='absolute flex flex-col items-center w-full h-full'>
+      <div className='relative bg-slate-50 w-full'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5'>
             Do you smoke...?
@@ -75,7 +75,7 @@ const DoYouSmoke = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='relative top-10 bg-slate-50 flex flex-wrap items-start justify-start gap-3 w-fit py-16 px-36'>
+      <div className='overflow-scroll bg-slate-50 flex flex-wrap items-center justify-center gap-2 py-10 h-full px-24'>
         {doYouSmoke.map(({ id, title }) => (
           <div key={id}>
             <Button

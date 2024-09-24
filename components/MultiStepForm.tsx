@@ -100,21 +100,53 @@ const MultiStepForm = () => {
     //console.log(step);
     switch (currentStepIndex) {
       case 0:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       case 1:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       case 2:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       case 3:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       case 4:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       case 5:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       case 6:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       case 7:
-        return <div>{ele[currentStepIndex]}</div>;
+        return (
+          <div className='h-full overflow-hidden relative flex items-center justify-center'>
+            {ele[currentStepIndex]}
+          </div>
+        );
       default:
         return (
           <div className='flex flex-col items-center justify-center gap-y-5'>
@@ -138,11 +170,11 @@ const MultiStepForm = () => {
             className={`step-item w-44 ${
               currentStepIndex === index && "active"
             } ${index < currentStepIndex && "complete"}`}>
-            <p className='text-sm step'>{index + 1}</p>
+            <p className='text-xs step'>{index + 1}</p>
           </div>
         ))}
       </div>
-      <div className='max-h-96 overflow-scroll scroll-smooth'>
+      <div className='max-h-[365px] h-full overflow-hidden'>
         <MultiStepFormController
           ele={formElementArray}
           currentStepIndex={currentStepIndex}

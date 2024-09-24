@@ -41,8 +41,8 @@ const YourType = ({
     return personTypeOnlyThreeTitles.length === 3 ? true : false;
   }
   return (
-    <div className='flex flex-col items-center'>
-      <div className='absolute top-5 bg-slate-50 w-full z-10'>
+    <div className='absolute flex flex-col items-center w-full h-full'>
+      <div className='relative bg-slate-50 w-full'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
             What kind of person do people around you say you are...?
@@ -53,7 +53,7 @@ const YourType = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='relative top-10 mt-20 mb-14 flex flex-wrap items-center justify-start gap-2 py-5 px-28'>
+      <div className='overflow-scroll flex flex-wrap items-center justify-start gap-2 py-5 px-28'>
         {personType.map(({ id, title }) => (
           <div key={id}>
             <Button
