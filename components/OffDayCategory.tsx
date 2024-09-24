@@ -2,18 +2,29 @@
 "use client";
 
 import { offDays } from "@/app/constants";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
 const OffDayCategory = ({
+  isItemSelect,
+  setIsItemSelect,
   selectedItem,
   setSelectedItem,
+  currentStepIndex,
 }: {
+  isItemSelect: boolean;
+  setIsItemSelect: Dispatch<SetStateAction<boolean>>;
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
+  currentStepIndex: number;
 }) => {
-  const currentStepIndex = 2;
+  useEffect(() => {
+    const OffDaysTitles = offDays.map(({ title }) => title);
+    isItemSelect = OffDaysTitles.some((item) => selectedItem.includes(item));
+    setIsItemSelect(isItemSelect);
+  }, [selectedItem[currentStepIndex]]);
+
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -40,7 +51,7 @@ const OffDayCategory = ({
       const newItemsUpdate = [...selectedItem];
 
       //replace final user selected item to previous selected item
-      newItemsUpdate[currentStepIndex - 1] = updateUserClickedItem;
+      newItemsUpdate[currentStepIndex] = updateUserClickedItem;
 
       //after replaced final user selected item to previous selected item
       //console.log(newItemsUpdate, prevUserClickedItem, updateUserClickedItem);
@@ -50,7 +61,7 @@ const OffDayCategory = ({
   //console.log(selectedItem, selectedItem.length);
   return (
     <div className='flex flex-col items-center'>
-      <div className='sticky top-0 bg-slate-50 w-full'>
+      <div className='absolute top-5 bg-slate-50 w-full'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5'>
             What is your off days...?
@@ -58,7 +69,7 @@ const OffDayCategory = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='flex flex-col items-start justify-center gap-y-3 w-fit py-16 px-36'>
+      <div className='relative top-14 flex flex-col items-start justify-center gap-y-3 w-fit py-16 px-36'>
         {offDays.map(({ id, title, desc }) => (
           <div key={id}>
             <Button

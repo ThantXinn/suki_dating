@@ -3,19 +3,30 @@
 "use client";
 import { holidayActivity } from "@/app/constants";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 const HolidayActivity = ({
+  isItemSelect,
+  setIsItemSelect,
   selectedItem,
   setSelectedItem,
   currentStepIndex,
 }: {
+  isItemSelect: boolean;
+  setIsItemSelect: Dispatch<SetStateAction<boolean>>;
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
   currentStepIndex: number;
 }) => {
-  //console.log(selectedItem.length);
+  useEffect(() => {
+    const holidayActivityTitles = holidayActivity.map(({ title }) => title);
+    isItemSelect = holidayActivityTitles.some((item) =>
+      selectedItem.includes(item),
+    );
+    setIsItemSelect(isItemSelect);
+  }, [selectedItem[currentStepIndex]]);
+
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -42,18 +53,34 @@ const HolidayActivity = ({
       }
     }
     if (selectedItem.length >= 5) {
-      //console.log("hi");
-      const getItem = selectedItem[currentStepIndex + 1];
-      //console.log(getItem);
-      const newItemsUpdate = [...selectedItem];
-      newItemsUpdate[currentStepIndex] = getItem;
-      const finalSelectedItems = [...newItemsUpdate];
-      finalSelectedItems[currentStepIndex + 1] = value;
-      //console.log(finalSelectedItems);
-      //console.log(newItemsUpdate);
-      setSelectedItem([...finalSelectedItems]);
-      if (isSelected) {
-        setSelectedItem(selectedItem.filter((item) => item !== value));
+      const yourHolidayActivity = holidayActivity.map((item) => item.title);
+      const checkSelectedItemInclude = yourHolidayActivity.filter((item) =>
+        selectedItem.find((y) => y === item),
+      );
+      if (checkSelectedItemInclude.length !== -1) {
+        const updateItemIndex = selectedItem.indexOf(
+          checkSelectedItemInclude[checkSelectedItemInclude.length - 1],
+        );
+        const replaceItems: string[] = [value];
+        const isAlreadyExist = selectedItem.map(
+          (item) => item === replaceItems[0],
+        );
+        const copyItems = [...selectedItem];
+        const updateCopyItems = copyItems.toSpliced(
+          updateItemIndex + 1,
+          0,
+          ...replaceItems,
+        );
+        setSelectedItem(updateCopyItems);
+        const removeInitialSelectedItem =
+          updateCopyItems[checkSelectedItemInclude.length];
+        if (checkSelectedItemInclude.length >= 2) {
+          const test = updateCopyItems.filter(
+            (item) => item !== removeInitialSelectedItem,
+          );
+          setSelectedItem(test);
+        }
+        //console.log(replaceItems[0], checkSelectedItemInclude[0]);
       }
     } else if (selectedItem.length === 4) {
       //console.log(selectedItem.length);
@@ -62,14 +89,21 @@ const HolidayActivity = ({
       const updateItem = [...selectedItem];
       updateItem[currentStepIndex + 1] = value;
       const finalSelectedItems = [...updateItem, getItem];
-      //console.log(finalSelectedItems);
+      console.log(finalSelectedItems);
       setSelectedItem([...finalSelectedItems]);
     }
   };
-  //console.log(selectedItem);
+
+  function acceptOnlyTwoItems() {
+    const allHolidayActivityTitles = holidayActivity.map(({ title }) => title);
+    const holidayActivityOnlyTwoTitles = allHolidayActivityTitles.filter(
+      (item) => selectedItem.includes(item),
+    );
+    return holidayActivityOnlyTwoTitles.length === 2 ? true : false;
+  }
   return (
     <div className='flex flex-col items-center'>
-      <div className='sticky top-0 bg-slate-50 w-full z-10'>
+      <div className='absolute top-5 bg-slate-50 w-full z-10'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
             What do you do on your days off...?
@@ -80,7 +114,7 @@ const HolidayActivity = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='flex flex-wrap items-center justify-start gap-2 py-5 px-36'>
+      <div className='relative mt-24 mb-4 bg-slate-50 flex flex-wrap items-center justify-start gap-1 py-5 px-28'>
         {holidayActivity.map(({ id, title, icon }) => (
           <div key={id}>
             <Button
@@ -90,6 +124,7 @@ const HolidayActivity = ({
                   ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
                   : "cursor-not-allowed"
               }`}
+              disabled={!selectedItem.includes(title) && acceptOnlyTwoItems()}
               onClick={() => {
                 handleOnClick(title);
               }}>

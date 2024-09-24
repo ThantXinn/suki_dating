@@ -390,7 +390,7 @@ export const livingWithWho = [
   },
   {
     id: 2,
-    title:"With praents"
+    title:"With parents"
   },
   {
     id: 3,
@@ -468,7 +468,7 @@ export const personType = [
   { id: 32, title: "Understanding" },
   { id: 33, title: "Determined" },
   { id: 34, title: "Warm" },
-  { id: 35, title: "Optimistic" },
+  { id: 35, title: "Happy" },
   { id: 36, title: "Resourceful" },
   { id: 37, title: "Diplomatic" },
   { id: 38, title: "Resilient" },
@@ -476,4 +476,31 @@ export const personType = [
   { id: 40, title: "Meticulous" },
   { id: 41, title: "Passionate" },
   { id: 42, title: "Compassionate" }
+]
+
+export const doYouSmoke = [
+  {
+    id: 0,
+    title:"Don't Smoke"
+  },
+  {
+    id: 1,
+    title:"Inhale"
+  },
+  {
+    id: 2,
+    title:"Smoking (electronic cigarettes)"
+  },
+  {
+    id: 3,
+    title:"Don't Smoke infront of non-smokers"
+  },
+  {
+    id: 4,
+    title:"I will stop if the other party is uncomfortable with it."
+  },
+  {
+    id: 5,
+    title:"Smoke occasionally"
+  },
 ]

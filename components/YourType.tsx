@@ -1,17 +1,29 @@
 /** @format */
 
 import { personType } from "@/app/constants";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
 const YourType = ({
+  isItemSelect,
+  setIsItemSelect,
   selectedItem,
   setSelectedItem,
+  currentStepIndex,
 }: {
+  isItemSelect: boolean;
+  setIsItemSelect: Dispatch<SetStateAction<boolean>>;
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
+  currentStepIndex: number;
 }) => {
+  useEffect(() => {
+    const personTypeTitles = personType.map(({ title }) => title);
+    isItemSelect = personTypeTitles.some((item) => selectedItem.includes(item));
+    setIsItemSelect(isItemSelect);
+  }, [selectedItem[currentStepIndex]]);
+
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -20,9 +32,17 @@ const YourType = ({
       setSelectedItem([...selectedItem, value]);
     }
   };
+
+  function acceptOnlyThreeItems() {
+    const allPersonTypeTitles = personType.map(({ title }) => title);
+    const personTypeOnlyThreeTitles = allPersonTypeTitles.filter((item) =>
+      selectedItem.includes(item),
+    );
+    return personTypeOnlyThreeTitles.length === 3 ? true : false;
+  }
   return (
     <div className='flex flex-col items-center'>
-      <div className='sticky top-0 bg-slate-50 w-full z-10'>
+      <div className='absolute top-5 bg-slate-50 w-full z-10'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
             What kind of person do people around you say you are...?
@@ -33,7 +53,7 @@ const YourType = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='flex flex-wrap items-center justify-start gap-2 py-5 px-36'>
+      <div className='relative top-10 mt-20 mb-14 flex flex-wrap items-center justify-start gap-2 py-5 px-28'>
         {personType.map(({ id, title }) => (
           <div key={id}>
             <Button
@@ -43,9 +63,7 @@ const YourType = ({
                   ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
                   : "cursor-not-allowed"
               }`}
-              disabled={
-                !selectedItem.includes(title) && selectedItem.length >= 9
-              }
+              disabled={!selectedItem.includes(title) && acceptOnlyThreeItems()}
               onClick={() => {
                 handleOnClick(title);
               }}>

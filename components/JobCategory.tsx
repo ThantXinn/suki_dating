@@ -1,18 +1,32 @@
 /** @format */
 "use client";
 import { jobs } from "@/app/constants";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
 const JobCategory = ({
+  isItemSelect,
+  setIsItemSelect,
   selectedItem,
   setSelectedItem,
+  currentStepIndex,
 }: {
+  isItemSelect: boolean;
+  setIsItemSelect: Dispatch<SetStateAction<boolean>>;
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
+  currentStepIndex: number;
 }) => {
-  const currentStepIndex = 1;
+  useEffect(() => {
+    const JobCategoryTitles = jobs.map(({ title }) => title);
+    //if user selected item is exist return true;
+    isItemSelect = JobCategoryTitles.some((item) =>
+      selectedItem.includes(item),
+    );
+    setIsItemSelect(isItemSelect);
+  }, [selectedItem[currentStepIndex]]);
+
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -29,7 +43,7 @@ const JobCategory = ({
       const newItemsUpdate = [...selectedItem];
 
       //replace final user selected item to previous selected item
-      newItemsUpdate[currentStepIndex - 1] = updateUserClickedItem;
+      newItemsUpdate[currentStepIndex] = updateUserClickedItem;
 
       //after replaced final user selected item to previous selected item
       //console.log(newItemsUpdate, prevUserClickedItem, updateUserClickedItem);
@@ -41,7 +55,7 @@ const JobCategory = ({
   //console.log(selectedItem);
   return (
     <div className='flex flex-col items-center'>
-      <div className='sticky top-0 bg-slate-50 w-full'>
+      <div className='absolute top-5 bg-slate-50 w-full z-10'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5'>
             What kind of work do you do...?
@@ -49,7 +63,7 @@ const JobCategory = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='flex flex-wrap items-center justify-start gap-1 py-5 px-36'>
+      <div className='relative mt-16 mb-4 bg-slate-50 flex flex-wrap items-center justify-start gap-1 py-5 px-28'>
         {jobs.map(({ id, title, desc }) => (
           <div key={id}>
             <Button

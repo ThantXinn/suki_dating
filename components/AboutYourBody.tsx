@@ -1,7 +1,13 @@
 /** @format */
 
 import { bodyType } from "@/app/constants";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -86,7 +92,7 @@ export function Height({
   };
   return (
     <div className='flex flex-col items-center'>
-      <div className='sticky top-0 bg-slate-50 w-full'>
+      <div className='absolute top-5 bg-slate-50 w-full z-10'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5'>
             What is your height...?
@@ -94,7 +100,7 @@ export function Height({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='flex items-center gap-4 py-5 px-36 mt-20'>
+      <div className='relative my-10 bg-slate-50 flex items-center gap-4 py-16 px-36 top-20'>
         <Input
           id='input-one'
           name='input-one'
@@ -138,15 +144,24 @@ export function Height({
 }
 
 export function BodyType({
+  isItemSelect,
+  setIsItemSelect,
   selectedItem,
   setSelectedItem,
   currentStepIndex,
 }: {
+  isItemSelect: boolean;
+  setIsItemSelect: Dispatch<SetStateAction<boolean>>;
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
   currentStepIndex: number;
 }) {
-  //console.log(selectedItem.length, selectedItem, currentStepIndex);
+  useEffect(() => {
+    const bodyTypeTitles = bodyType.map(({ title }) => title);
+    isItemSelect = bodyTypeTitles.some((item) => selectedItem.includes(item));
+    setIsItemSelect(isItemSelect);
+  }, [selectedItem[currentStepIndex]]);
+
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -155,16 +170,42 @@ export function BodyType({
       setSelectedItem([...selectedItem, value]);
     }
     if (selectedItem.length >= 6 && currentStepIndex === 5) {
-      console.log(selectedItem.length);
-      const newItemsUpdate = [...selectedItem];
-      newItemsUpdate[currentStepIndex] = value;
-      console.log(newItemsUpdate);
-      //setSelectedItem([...newItemsUpdate]);
+      //console.log(selectedItem.length, currentStepIndex);
+      const myBodyType = bodyType.map((item) => item.title);
+      const checkSelectedItemInclude = myBodyType.filter((item) =>
+        selectedItem.find((y) => y === item),
+      );
+      //console.log(checkSelectedItemInclude);
+      if (checkSelectedItemInclude.length > 0) {
+        //console.log(selectedItem.length, value, checkSelectedItemInclude);
+        const updateItemIndex = selectedItem.indexOf(
+          checkSelectedItemInclude[0],
+        );
+        const updateItems = [...selectedItem];
+        updateItems[updateItemIndex] = value;
+        setSelectedItem([...updateItems]);
+        //console.log(updateItems);
+      } else {
+        //console.log("hi");
+        //if users click back/previous button with respective selected values
+        //check the current page of previous user selected value and get the upate value when user select the item
+        const updateUserClickedItem = value;
+        //const finalUserSelectedItem_ = selectedItem[selectedItem.length - 1];
+        const newItemsUpdate = [...selectedItem];
+
+        //replace final user selected item to previous selected item
+        newItemsUpdate[currentStepIndex + 1] = updateUserClickedItem;
+
+        //after replaced final user selected item to previous selected item
+        //console.log(newItemsUpdate, updateUserClickedItem);
+        setSelectedItem([...newItemsUpdate]);
+        //console.log(newItemsUpdate);
+      }
     }
   };
   return (
-    <div className='flex flex-col items-center'>
-      <div className='sticky top-0 bg-slate-50 w-full z-10'>
+    <div className='flex flex-col items-center justify-center'>
+      <div className='absolute top-5 bg-slate-50 w-full z-10'>
         <Label htmlFor='sub-title'>
           <h1 className='text-2xl text-center font-semibold py-5 flex flex-col justify-center items-center'>
             Please choose the one that best suits your body type...
@@ -172,7 +213,7 @@ export function BodyType({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='flex flex-wrap items-center justify-start gap-2 py-5 px-36'>
+      <div className='relative my-20 top-20 bg-slate-50 flex flex-wrap items-center justify-start gap-1 py-5 px-28'>
         {bodyType.map(({ id, title }) => (
           <div key={id}>
             <Button

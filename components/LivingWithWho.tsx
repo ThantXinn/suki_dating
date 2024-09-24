@@ -1,19 +1,32 @@
 /** @format */
 
 import { livingWithWho } from "@/app/constants";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
 const LivingWithWho = ({
+  isItemSelect,
+  setIsItemSelect,
   selectedItem,
   setSelectedItem,
   currentStepIndex,
 }: {
+  isItemSelect: boolean;
+  setIsItemSelect: Dispatch<SetStateAction<boolean>>;
   selectedItem: string[];
   setSelectedItem: Dispatch<SetStateAction<string[]>>;
   currentStepIndex: number;
 }) => {
+  useEffect(() => {
+    const livingWithWhoTitles = livingWithWho.map(({ title }) => title);
+    isItemSelect = livingWithWhoTitles.some((item) =>
+      selectedItem.includes(item),
+    );
+    setIsItemSelect(isItemSelect);
+  }, [selectedItem[currentStepIndex]]);
+
+  //console.log(selectedItem);
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -21,37 +34,39 @@ const LivingWithWho = ({
     } else {
       setSelectedItem([...selectedItem, value]);
     }
-    if (selectedItem.length <= 4 && currentStepIndex === 3) {
-      const newItemsUpdate = [...selectedItem];
-      if (selectedItem.length === 4) {
-        newItemsUpdate[currentStepIndex + 1] = value;
-        //if users selected only one value form previous component
-        //                      (or)
-        //selected values contain four excecute / check below condition
-        const checkSelectedItem = livingWithWho.filter(
-          (item) => item.title === selectedItem[currentStepIndex],
+
+    if (selectedItem.length >= 4 && currentStepIndex === 3) {
+      const whoIsWithYou = livingWithWho.map((item) => item.title);
+      //console.log(whoIsWithYou);
+      const checkSelectedItemInclude = whoIsWithYou.filter((item) =>
+        selectedItem.find((y) => y === item),
+      );
+      //console.log(checkSelectedItemInclude);
+      if (checkSelectedItemInclude.length > 0) {
+        //console.log(selectedItem.length, value, checkSelectedItemInclude);
+        const updateItemIndex = selectedItem.indexOf(
+          checkSelectedItemInclude[0],
         );
-        if (checkSelectedItem.length > 0) {
-          const filterItems = newItemsUpdate.filter((item) => item !== value);
-          filterItems[filterItems.length - 1] = value;
-          setSelectedItem([...filterItems]);
-        }
+        const updateItems = [...selectedItem];
+        updateItems[updateItemIndex] = value;
+        setSelectedItem([...updateItems]);
+        //console.log(updateItems);
+      } else {
+        //console.log("hi");
+        //if users click back/previous button with respective selected values
+        //check the current page of previous user selected value and get the upate value when user select the item
+        const updateUserClickedItem = value;
+        //const finalUserSelectedItem_ = selectedItem[selectedItem.length - 1];
+        const newItemsUpdate = [...selectedItem];
+
+        //replace final user selected item to previous selected item
+        newItemsUpdate[currentStepIndex + 1] = updateUserClickedItem;
+
+        //after replaced final user selected item to previous selected item
+        //console.log(newItemsUpdate, updateUserClickedItem);
+        setSelectedItem([...newItemsUpdate]);
+        //console.log(newItemsUpdate);
       }
-      //console.log(selectedItem);
-    } else if (selectedItem.length >= 5 && currentStepIndex === 3) {
-      //if users click back/previous button with respective selected values
-      //check the current page of previous user selected value and get the upate value when user select the item
-      const updateUserClickedItem = value;
-      //const finalUserSelectedItem_ = selectedItem[selectedItem.length - 1];
-      const newItemsUpdate = [...selectedItem];
-
-      //replace final user selected item to previous selected item
-      newItemsUpdate[currentStepIndex + 1] = updateUserClickedItem;
-
-      //after replaced final user selected item to previous selected item
-      //console.log(newItemsUpdate, updateUserClickedItem);
-      setSelectedItem([...newItemsUpdate]);
-      //console.log(newItemsUpdate);
     }
   };
   //console.log("after fired click event value", selectedItem);

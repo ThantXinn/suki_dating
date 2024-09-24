@@ -1,10 +1,10 @@
 /** @format */
 "use client";
 
-import { livingWithWho } from "@/app/constants";
 import { ReactElement, useState } from "react";
 import { FcNext, FcOk, FcPrevious } from "react-icons/fc";
 import { BodyType, Height } from "./AboutYourBody";
+import DoYouSmoke from "./DoYouSmoke";
 import HolidayActivity from "./HolidayActivity";
 import JobCategory from "./JobCategory";
 import LivingWithWho from "./LivingWithWho";
@@ -20,22 +20,33 @@ const MultiStepForm = () => {
   const [secondInput, setSecondInput] = useState<string>("");
   const [thirdInput, setThirdInput] = useState<string>("");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [isItemSelect, setIsItemSelect] = useState<boolean>(true);
 
   const formElementArray: ReactElement[] = [
     <JobCategory
+      isItemSelect={isItemSelect}
+      setIsItemSelect={setIsItemSelect}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
+      currentStepIndex={currentStepIndex}
     />,
     <OffDayCategory
+      isItemSelect={isItemSelect}
+      setIsItemSelect={setIsItemSelect}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
+      currentStepIndex={currentStepIndex}
     />,
     <HolidayActivity
+      isItemSelect={isItemSelect}
+      setIsItemSelect={setIsItemSelect}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
       currentStepIndex={currentStepIndex}
     />,
     <LivingWithWho
+      isItemSelect={isItemSelect}
+      setIsItemSelect={setIsItemSelect}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
       currentStepIndex={currentStepIndex}
@@ -49,13 +60,25 @@ const MultiStepForm = () => {
       setThirdInput={setThirdInput}
     />,
     <BodyType
+      isItemSelect={isItemSelect}
+      setIsItemSelect={setIsItemSelect}
+      selectedItem={selectedItem}
+      setSelectedItem={setSelectedItem}
+      currentStepIndex={currentStepIndex}
+    />,
+    <DoYouSmoke
+      isItemSelect={isItemSelect}
+      setIsItemSelect={setIsItemSelect}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
       currentStepIndex={currentStepIndex}
     />,
     <YourType
+      isItemSelect={isItemSelect}
+      setIsItemSelect={setIsItemSelect}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
+      currentStepIndex={currentStepIndex}
     />,
   ];
 
@@ -90,6 +113,8 @@ const MultiStepForm = () => {
         return <div>{ele[currentStepIndex]}</div>;
       case 6:
         return <div>{ele[currentStepIndex]}</div>;
+      case 7:
+        return <div>{ele[currentStepIndex]}</div>;
       default:
         return (
           <div className='flex flex-col items-center justify-center gap-y-5'>
@@ -104,7 +129,6 @@ const MultiStepForm = () => {
         );
     }
   }
-  //console.log(selectedItem[currentStepIndex], currentStepIndex);
   return (
     <div className='relative w-full min-h-96 h-[440px]'>
       <div className='flex items-center w-full justify-between'>
@@ -127,7 +151,11 @@ const MultiStepForm = () => {
       <div
         className={`absolute bottom-0 right-0 flex w-full ${
           currentStepIndex === 0 ? "justify-end" : "justify-between"
-        }  px-7 py-5`}>
+        }  px-7 py-2 bg-slate-50 ${
+          formElementArray.length === currentStepIndex
+            ? " border-none"
+            : " border-t-2 border-black-100/50"
+        }`}>
         <Button
           size={"icon"}
           variant={"ghost"}
@@ -148,17 +176,13 @@ const MultiStepForm = () => {
               ? "hidden"
               : "w-10 h-10 bg-slate-300 hover:bg-slate-300/70 rounded-full"
           }`}
-          disabled={
-            currentStepIndex === 3
-              ? checkConditionOne({ selectedItem, currentStepIndex })
-              : checkConditionTwo({
-                  selectedItem,
-                  currentStepIndex,
-                  firstInput,
-                  secondInput,
-                  thirdInput,
-                })
-          }
+          disabled={controlButtonDisableOrNot({
+            isItemSelect,
+            currentStepIndex,
+            firstInput,
+            secondInput,
+            thirdInput,
+          })}
           onClick={() => handleOnNext()}>
           {formElementArray.length === currentStepIndex + 1 ? (
             <FcOk />
@@ -173,37 +197,28 @@ const MultiStepForm = () => {
 
 export default MultiStepForm;
 
-export function checkConditionOne({
-  selectedItem,
-  currentStepIndex,
-}: {
-  selectedItem: string[];
-  currentStepIndex: number;
-}) {
-  const isItemsInclude = livingWithWho.filter(
-    ({ id, title }) =>
-      title == selectedItem[currentStepIndex] ||
-      title == selectedItem[currentStepIndex + 1],
-  );
-  return isItemsInclude.length === 0 ? true : false;
-}
-
-export function checkConditionTwo({
-  selectedItem,
+export function controlButtonDisableOrNot({
+  isItemSelect,
   currentStepIndex,
   firstInput,
   secondInput,
   thirdInput,
 }: {
-  selectedItem: string[];
+  isItemSelect: boolean;
   currentStepIndex: number;
   firstInput: string;
   secondInput: string;
   thirdInput: string;
 }) {
-  return selectedItem[currentStepIndex] === undefined ||
-    (currentStepIndex === 4 &&
-      (firstInput === "" || secondInput === "" || thirdInput === ""))
-    ? true
-    : false;
+  if (currentStepIndex === 4) {
+    return currentStepIndex === 4 &&
+      (firstInput === "" || secondInput === "" || thirdInput === "")
+      ? true
+      : false;
+  } else {
+    // ---> initial render and if user is not select none of these items/values (isItemSelect === true)
+    // ---> if isItemSelect is true => next or ok button also true => so user cannnot click this button to continue
+    return !isItemSelect;
+    // ---> if user select items/values change the initial value of (---isItemSelect(true)=>!isItemSelect(false)---)
+  }
 }
