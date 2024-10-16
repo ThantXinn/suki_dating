@@ -1,7 +1,7 @@
 /** @format */
 "use client";
-import logo from "@/public/logo.svg";
-import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
+import { logo } from "@/public/assets";
+import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { navMenus } from "../app/constants";
@@ -33,8 +33,11 @@ const Navbar = () => {
             {title}
           </Link>
         ))}
-        <RegisterLink className='py-1.5 border flex justify-center rounded-full bg-primary w-24 text-white'>
+        <LoginLink className='py-1.5 border flex justify-center rounded-full bg-primary w-24 text-white'>
           Login
+        </LoginLink>
+        <RegisterLink className='py-1.5 border flex justify-center rounded-full bg-primary w-44 text-white'>
+          Create Account
         </RegisterLink>
       </div>
     </div>

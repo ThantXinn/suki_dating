@@ -14,16 +14,64 @@ datasource db {
 }
 
 model user {
-  id           String   @id @unique
-  email        String
-  firstname    String?
-  lastname     String?
-  image        String?
-  nickname     String?
-  gender       String?
-  bdmonth      Int?
-  bdday        Int?
-  bdyear       Int?
-  overeightenn Boolean? @default(false)
-  acceptrules  Boolean? @default(false)
+  id              String            @id @unique
+  email           String
+  firstname       String?
+  lastname        String?
+  image           String?
+  nickname        String?
+  gender          String?
+  nationality     String?
+  bdmonth         Int?
+  bdday           Int?
+  bdyear          Int?
+  overeightenn    Boolean?          @default(false)
+  acceptrules     Boolean?          @default(false)
+  sukiUserProfile sukiUserProfile[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model sukiUserProfile {
+  id                  String                @id @default(uuid())
+  jobCategory         String?
+  offDayCategory      String?
+  offDayActivity      String[]              @default([])
+  livingCategory      String?
+  bodyHeightCategory  Int?
+  bodyTypeCategory    String?
+  smokingCategory     String?
+  personTypeCategory  String[]              @default([])
+  incomeCategory      String?
+  educationCategory   String?
+  profilePhotoUrl     String?               @default("")
+  isSetupComplete     Boolean?              @default(false)
+  isIdentified        Boolean?              @default(false)
+  user                user?                 @relation(fields: [userId], references: [id])
+  userId              String?
+  sukiUserIntro       sukiUserIntro[]
+  sukiUserPreferences sukiUserPreferences[]
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+}
+
+model sukiUserIntro {
+  id              String           @id @default(uuid())
+  sukiUserProfile sukiUserProfile? @relation(fields: [userProfileId], references: [id])
+  userProfileId   String?
+  title           String?          @default("")
+  content         String?          @default("")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model sukiUserPreferences {
+  id                String           @id @default(uuid())
+  userHobbies       String[]         @default([])
+  userIntrests      String[]         @default([])
+  userValues        String[]         @default([])
+  sukiUserProfile   sukiUserProfile? @relation(fields: [sukiUserProfileId], references: [id])
+  sukiUserProfileId String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }

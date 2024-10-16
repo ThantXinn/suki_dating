@@ -4,19 +4,29 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
+type smokingCategoryData = {
+  smokingCategory: string;
+};
 const DoYouSmoke = ({
+  smokingCategory,
+  updateMultiFormData,
+  icon,
   isItemSelect,
   setIsItemSelect,
-  selectedItem,
-  setSelectedItem,
-  currentStepIndex,
 }: {
+  smokingCategory: string;
+  updateMultiFormData: (fields: Partial<smokingCategoryData>) => void;
+  icon: React.ReactElement;
   isItemSelect: boolean;
   setIsItemSelect: Dispatch<SetStateAction<boolean>>;
-  selectedItem: string[];
-  setSelectedItem: Dispatch<SetStateAction<string[]>>;
-  currentStepIndex: number;
 }) => {
+  useEffect(() => {
+    const doYouSmokeTitles = doYouSmoke.map(({ title }) => title);
+    isItemSelect = doYouSmokeTitles.includes(smokingCategory);
+    setIsItemSelect(isItemSelect);
+  }, [smokingCategory]);
+
+  /*
   useEffect(() => {
     const doYouSmokeTitles = doYouSmoke.map(({ title }) => title);
     isItemSelect = doYouSmokeTitles.some((item) => selectedItem.includes(item));
@@ -30,7 +40,7 @@ const DoYouSmoke = ({
     } else {
       setSelectedItem([...selectedItem, value]);
     }
-    if (selectedItem.length >= 7 && currentStepIndex === 6) {
+    if (selectedItem.length >= 6 && currentStepIndex === 6) {
       //console.log(selectedItem.length, currentStepIndex);
       const doYouSmokeItemsInclude = doYouSmoke.map((item) => item.title);
       const checkSelectedItemInclude = doYouSmokeItemsInclude.filter((item) =>
@@ -55,7 +65,7 @@ const DoYouSmoke = ({
         const newItemsUpdate = [...selectedItem];
 
         //replace final user selected item to previous selected item
-        newItemsUpdate[currentStepIndex + 1] = updateUserClickedItem;
+        newItemsUpdate[currentStepIndex] = updateUserClickedItem;
 
         //after replaced final user selected item to previous selected item
         //console.log(newItemsUpdate, updateUserClickedItem);
@@ -64,6 +74,7 @@ const DoYouSmoke = ({
       }
     }
   };
+  */
   //console.log(selectedItem, selectedItem.length);
   return (
     <div className='absolute flex flex-col items-center w-full h-full'>
@@ -75,18 +86,18 @@ const DoYouSmoke = ({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='overflow-scroll bg-slate-50 flex flex-wrap items-center justify-center gap-2 py-10 h-full px-24'>
+      <div className='overflow-scroll bg-slate-50 flex flex-wrap items-center justify-center gap-2 py-20 h-full px-24'>
         {doYouSmoke.map(({ id, title }) => (
           <div key={id}>
             <Button
               variant={"ghost"}
               className={`p-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
-                selectedItem?.includes(title)
+                smokingCategory === title
                   ? "border-red-400 text-black-100 bg-slate-200"
                   : ""
               }`}
               onClick={() => {
-                handleOnClick(title);
+                updateMultiFormData({ smokingCategory: title });
               }}>
               <p className='text-sm'>{title}</p>
             </Button>

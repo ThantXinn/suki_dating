@@ -12,6 +12,8 @@ export function CustomBirthDayValidationInput({
   setDay,
   year,
   setYear,
+  isError,
+  setIsError,
 }: {
   month: string;
   setMonth: Dispatch<SetStateAction<string>>;
@@ -19,8 +21,9 @@ export function CustomBirthDayValidationInput({
   setDay: Dispatch<SetStateAction<string>>;
   year: string;
   setYear: Dispatch<SetStateAction<string>>;
+  isError: string;
+  setIsError: Dispatch<SetStateAction<string>>;
 }) {
-  const [error, setError] = useState<string>("");
   const minAge = 18;
   const maxAge = 98;
 
@@ -37,10 +40,10 @@ export function CustomBirthDayValidationInput({
     // Check if the month is between 1 and 12
     const numericMonth = parseInt(month, 10);
     if (numericMonth < 1 || numericMonth > 12) {
-      setError("Please enter a valid month (01-12)");
+      setIsError("Please enter a valid month (01-12)");
       setMonth("");
     } else {
-      setError(""); // Clear the error if the input is valid
+      setIsError(""); // Clear the error if the input is valid
 
       // Pad single-digit months with '0' (e.g., '7' becomes '07')
       if (month.length === 1) {
@@ -62,10 +65,10 @@ export function CustomBirthDayValidationInput({
     // Check if the day is between 1 and 31
     const numericDay = parseInt(day, 10);
     if (numericDay < 1 || numericDay > 31) {
-      setError("Please enter a valid day (01-31)");
+      setIsError("Please enter a valid day (01-31)");
       setDay("");
     } else {
-      setError(""); // Clear the error if the input is valid
+      setIsError(""); // Clear the error if the input is valid
       // Pad single-digit days with '0' (e.g., '7' becomes '07')
       if (day.length === 1) {
         setDay("0" + day);
@@ -75,10 +78,24 @@ export function CustomBirthDayValidationInput({
 
   const handleYearChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
     // Ensure the value only contains numbers and is in YYYY format
     if (/^\d{0,4}$/.test(value)) {
       setYear(value);
+    }
+    const numericYear = parseInt(value, 10);
+    const currentYear = new Date();
+    const validYear = currentYear.getFullYear() - numericYear;
+    if (validYear < minAge || validYear > maxAge) {
+      setIsError("Sorry The service is not available under the age of 18.");
+      //setYear("");
+    } else {
+      setIsError(""); // Clear the error if the input is valid
+      // Pad single-digit days with '0' (e.g., '7' becomes '07')
+      if (Number.isNaN(numericYear)) {
+        setYear("");
+      } else {
+        setYear(numericYear.toString());
+      }
     }
   };
 
@@ -88,10 +105,10 @@ export function CustomBirthDayValidationInput({
     const currentYear = new Date();
     const validYear = currentYear.getFullYear() - numericYear;
     if (validYear < minAge || validYear > maxAge) {
-      setError("Sorry The service is not available under the age of 18.");
+      setIsError("Sorry The service is not available under the age of 18.");
       setYear("");
     } else {
-      setError(""); // Clear the error if the input is valid
+      setIsError(""); // Clear the error if the input is valid
       // Pad single-digit days with '0' (e.g., '7' becomes '07')
       if (Number.isNaN(numericYear)) {
         setYear("");
@@ -156,7 +173,7 @@ export function CustomBirthDayValidationInput({
         </div>
         {/* Display error message if the input is invalid */}
       </div>
-      {error && <p className='text-red-500 text-xs'>{error}</p>}
+      {isError && <p className='text-red-500 text-xs'>{isError}</p>}
     </div>
   );
 }

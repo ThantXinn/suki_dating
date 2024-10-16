@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-    console.log(user)
+    //console.log(user)
     if (!user || user === null || !user.id) {
         throw new Error("Something went wrong... try again");
     }
@@ -31,5 +31,6 @@ export async function GET() {
         )
         return NextResponse.redirect("http://localhost:3000/create")
     } else
-        return NextResponse.redirect("http://localhost:3000")
+        
+        return NextResponse.redirect("http://localhost:3000/pickup")
 }

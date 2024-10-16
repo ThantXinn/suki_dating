@@ -1,32 +1,34 @@
 /** @format */
 "use client";
 import { jobs } from "@/app/constants";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
+type jobCategoryData = {
+  jobCategory: string;
+};
 const JobCategory = ({
+  jobCategory,
+  updateMultiFormData,
+  icon,
   isItemSelect,
   setIsItemSelect,
-  selectedItem,
-  setSelectedItem,
-  currentStepIndex,
 }: {
+  jobCategory: string;
+  updateMultiFormData: (fields: Partial<jobCategoryData>) => void;
+  icon: ReactElement;
   isItemSelect: boolean;
   setIsItemSelect: Dispatch<SetStateAction<boolean>>;
-  selectedItem: string[];
-  setSelectedItem: Dispatch<SetStateAction<string[]>>;
-  currentStepIndex: number;
 }) => {
   useEffect(() => {
     const JobCategoryTitles = jobs.map(({ title }) => title);
     //if user selected item is exist return true;
-    isItemSelect = JobCategoryTitles.some((item) =>
-      selectedItem.includes(item),
-    );
+    isItemSelect = JobCategoryTitles.includes(jobCategory);
     setIsItemSelect(isItemSelect);
-  }, [selectedItem[currentStepIndex]]);
+  }, [jobCategory]);
 
+  /*
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -52,7 +54,8 @@ const JobCategory = ({
       setSelectedItem([value]);
     }
   };
-  //console.log(selectedItem);
+  */
+  //console.log(jobCategory);
   return (
     <div className='absolute flex flex-col items-center h-full w-full'>
       <div className='relative bg-slate-50 w-full'>
@@ -69,11 +72,14 @@ const JobCategory = ({
             <Button
               variant={"ghost"}
               className={`p-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
-                selectedItem?.includes(title)
+                jobCategory === title
                   ? "border-red-400 text-black-100 bg-slate-200"
                   : ""
               }`}
-              onClick={() => handleOnClick(title)}>
+              onClick={(e) => {
+                //handleOnClick(title),
+                updateMultiFormData({ jobCategory: title });
+              }}>
               <p className='text-sm'>{title}</p>
             </Button>
           </div>

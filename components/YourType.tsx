@@ -1,42 +1,53 @@
 /** @format */
 
 import { personType } from "@/app/constants";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
+type personCategoryData = {
+  personTypeCategory: string[];
+};
 const YourType = ({
+  icon,
+  personTypeCategory,
+  updateMultiFormData,
   isItemSelect,
   setIsItemSelect,
-  selectedItem,
-  setSelectedItem,
-  currentStepIndex,
 }: {
+  icon: ReactElement;
+  personTypeCategory: string[];
+  updateMultiFormData: (fields: Partial<personCategoryData>) => void;
   isItemSelect: boolean;
   setIsItemSelect: Dispatch<SetStateAction<boolean>>;
-  selectedItem: string[];
-  setSelectedItem: Dispatch<SetStateAction<string[]>>;
-  currentStepIndex: number;
 }) => {
   useEffect(() => {
     const personTypeTitles = personType.map(({ title }) => title);
-    isItemSelect = personTypeTitles.some((item) => selectedItem.includes(item));
+    isItemSelect = personTypeTitles.some((item) =>
+      personTypeCategory.includes(item),
+    );
     setIsItemSelect(isItemSelect);
-  }, [selectedItem[currentStepIndex]]);
+  }, [personTypeCategory]);
 
   const handleOnClick = (value: string) => {
-    const isSelected = selectedItem.includes(value);
+    const isSelected = personTypeCategory.includes(value);
     if (isSelected) {
-      setSelectedItem(selectedItem.filter((item) => item !== value));
+      //setSelectedItem(selectedItem.filter((item) => item !== value));
+      updateMultiFormData({
+        personTypeCategory: personTypeCategory.filter((item) => item !== value),
+      });
     } else {
-      setSelectedItem([...selectedItem, value]);
+      //setSelectedItem([...selectedItem, value]);
+      updateMultiFormData({
+        personTypeCategory: [...personTypeCategory, value],
+      });
     }
   };
 
   function acceptOnlyThreeItems() {
     const allPersonTypeTitles = personType.map(({ title }) => title);
     const personTypeOnlyThreeTitles = allPersonTypeTitles.filter((item) =>
-      selectedItem.includes(item),
+      personTypeCategory.includes(item),
     );
     return personTypeOnlyThreeTitles.length === 3 ? true : false;
   }
@@ -59,11 +70,13 @@ const YourType = ({
             <Button
               variant={"ghost"}
               className={`flex items-center p-2 gap-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
-                selectedItem?.includes(title)
+                personTypeCategory?.includes(title)
                   ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
                   : "cursor-not-allowed"
               }`}
-              disabled={!selectedItem.includes(title) && acceptOnlyThreeItems()}
+              disabled={
+                !personTypeCategory.includes(title) && acceptOnlyThreeItems()
+              }
               onClick={() => {
                 handleOnClick(title);
               }}>

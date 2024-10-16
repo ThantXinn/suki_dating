@@ -3,37 +3,51 @@
 "use client";
 import { holidayActivity } from "@/app/constants";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+
+type offDayActivitiesCategoryData = {
+  offDayActivityCategory: string[];
+};
+
 const HolidayActivity = ({
+  offDayActivityCategory,
+  updateMultiFormData,
+  icon,
   isItemSelect,
   setIsItemSelect,
-  selectedItem,
-  setSelectedItem,
-  currentStepIndex,
 }: {
+  offDayActivityCategory: string[];
+  updateMultiFormData: (fields: Partial<offDayActivitiesCategoryData>) => void;
+  icon: ReactElement;
   isItemSelect: boolean;
   setIsItemSelect: Dispatch<SetStateAction<boolean>>;
-  selectedItem: string[];
-  setSelectedItem: Dispatch<SetStateAction<string[]>>;
-  currentStepIndex: number;
 }) => {
   useEffect(() => {
     const holidayActivityTitles = holidayActivity.map(({ title }) => title);
     isItemSelect = holidayActivityTitles.some((item) =>
-      selectedItem.includes(item),
+      offDayActivityCategory.includes(item),
     );
     setIsItemSelect(isItemSelect);
-  }, [selectedItem[currentStepIndex]]);
+  }, [offDayActivityCategory]);
 
   const handleOnClick = (value: string) => {
-    const isSelected = selectedItem.includes(value);
+    const isSelected = offDayActivityCategory.includes(value);
     if (isSelected) {
-      setSelectedItem(selectedItem.filter((item) => item !== value));
+      //setSelectedItem(selectedItem.filter((item) => item !== value));
+      updateMultiFormData({
+        offDayActivityCategory: offDayActivityCategory.filter(
+          (item) => item !== value,
+        ),
+      });
     } else {
-      setSelectedItem([...selectedItem, value]);
+      //setSelectedItem([...selectedItem, value]);
+      updateMultiFormData({
+        offDayActivityCategory: [...offDayActivityCategory, value],
+      });
     }
+    /*
     if (
       selectedItem.length >= 4 &&
       selectedItem.length <= 4 &&
@@ -43,7 +57,6 @@ const HolidayActivity = ({
         ...selectedItem.slice(0, currentStepIndex),
         ...selectedItem.slice(currentStepIndex + 1),
       ];
-      //console.log(newItemsUpdate);
       //if users click back/previous button with respective selected values
       //check the current page of previous user selected value and get the upate value when user select the item
       const updateUserClickedItem = value;
@@ -62,9 +75,6 @@ const HolidayActivity = ({
           checkSelectedItemInclude[checkSelectedItemInclude.length - 1],
         );
         const replaceItems: string[] = [value];
-        const isAlreadyExist = selectedItem.map(
-          (item) => item === replaceItems[0],
-        );
         const copyItems = [...selectedItem];
         const updateCopyItems = copyItems.toSpliced(
           updateItemIndex + 1,
@@ -72,6 +82,7 @@ const HolidayActivity = ({
           ...replaceItems,
         );
         setSelectedItem(updateCopyItems);
+
         const removeInitialSelectedItem =
           updateCopyItems[checkSelectedItemInclude.length];
         if (checkSelectedItemInclude.length >= 2) {
@@ -90,14 +101,14 @@ const HolidayActivity = ({
       updateItem[currentStepIndex + 1] = value;
       const finalSelectedItems = [...updateItem, getItem];
       console.log(finalSelectedItems);
-      setSelectedItem([...finalSelectedItems]);
     }
+    */
   };
 
   function acceptOnlyTwoItems() {
     const allHolidayActivityTitles = holidayActivity.map(({ title }) => title);
     const holidayActivityOnlyTwoTitles = allHolidayActivityTitles.filter(
-      (item) => selectedItem.includes(item),
+      (item) => offDayActivityCategory.includes(item),
     );
     return holidayActivityOnlyTwoTitles.length === 2 ? true : false;
   }
@@ -120,11 +131,13 @@ const HolidayActivity = ({
             <Button
               variant={"ghost"}
               className={`flex items-center p-2 gap-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
-                selectedItem?.includes(title)
+                offDayActivityCategory?.includes(title)
                   ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
                   : "cursor-not-allowed"
               }`}
-              disabled={!selectedItem.includes(title) && acceptOnlyTwoItems()}
+              disabled={
+                !offDayActivityCategory.includes(title) && acceptOnlyTwoItems()
+              }
               onClick={() => {
                 handleOnClick(title);
               }}>

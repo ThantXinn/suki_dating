@@ -2,23 +2,34 @@
 "use client";
 
 import { offDays } from "@/app/constants";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
+type offDayCategoryData = {
+  offDayCategory: string;
+};
 const OffDayCategory = ({
+  offDayCategory,
+  updateMultiFormData,
   isItemSelect,
   setIsItemSelect,
-  selectedItem,
-  setSelectedItem,
-  currentStepIndex,
+  icon,
 }: {
+  offDayCategory: string;
+  updateMultiFormData: (fields: Partial<offDayCategoryData>) => void;
   isItemSelect: boolean;
   setIsItemSelect: Dispatch<SetStateAction<boolean>>;
-  selectedItem: string[];
-  setSelectedItem: Dispatch<SetStateAction<string[]>>;
-  currentStepIndex: number;
+  icon: ReactElement;
 }) => {
+  useEffect(() => {
+    const OffDaysTitles = offDays.map(({ title }) => title);
+    isItemSelect = OffDaysTitles.includes(offDayCategory);
+    setIsItemSelect(isItemSelect);
+  }, [offDayCategory]);
+
+  /*
+  const [selectedItem, setSelectedItem] = useState<string[]>([offDayCategory]);
   useEffect(() => {
     const OffDaysTitles = offDays.map(({ title }) => title);
     isItemSelect = OffDaysTitles.some((item) => selectedItem.includes(item));
@@ -58,6 +69,7 @@ const OffDayCategory = ({
       setSelectedItem([...newItemsUpdate]);
     }
   };
+  */
   //console.log(selectedItem, selectedItem.length);
   return (
     <div className='absolute flex flex-col items-center justify-center h-full w-full'>
@@ -75,12 +87,13 @@ const OffDayCategory = ({
             <Button
               variant={"ghost"}
               className={`p-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
-                selectedItem?.includes(title)
+                title === offDayCategory
                   ? "border-red-400 text-black-100 bg-slate-200"
                   : ""
               }`}
               onClick={() => {
-                handleOnClick(title);
+                //handleOnClick(title);
+                updateMultiFormData({ offDayCategory: title });
               }}>
               <p className='text-sm'>{title}</p>
             </Button>

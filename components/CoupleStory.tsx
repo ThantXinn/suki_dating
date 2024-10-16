@@ -1,25 +1,40 @@
 /** @format */
 "use client";
-import coverPhoto from "@/public/coverphoto.jpg";
 import Autoplay from "embla-carousel-autoplay";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Card, CardContent } from "./ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./ui/carousel";
+import PhotoAlbum from "./PhotoAlbum";
 import CustomTitle from "./ui/custom-title";
-import { Label } from "./ui/label";
 
 const CoupleStory = () => {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: false }),
   );
+
+  const profileSetupInstruction = [
+    {
+      id: 0,
+      main_title: "Story No ",
+      sub_title: "Story Title ",
+      content: "Tell me you story",
+      photoUrl: "",
+    },
+    {
+      id: 1,
+      main_title: "Story No ",
+      sub_title: "Story Title ",
+      content: "Tell me you story",
+      photoUrl: "",
+    },
+    {
+      id: 2,
+      main_title: "Story No ",
+      sub_title: "Story Title ",
+      content: "Tell me you story",
+      photoUrl: "",
+    },
+  ];
+
   return (
     <div
       id='story'
@@ -45,55 +60,11 @@ const CoupleStory = () => {
             where it's easy to find the perfect match for you?
           </p>
         </div>
-        <div
-          id='photo-album'
-          className='mt-7 w-screen flex items-center justify-center py-5 mx-auto'>
-          <Carousel
-            opts={{
-              align: "center",
-              loop: true,
-            }}
-            plugins={[plugin.current]}
-            className='w-full'
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}>
-            <CarouselContent>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <CarouselItem key={index}>
-                  <div>
-                    <Card className='h-[440px]'>
-                      <CardContent className='relative flex h-full items-center justify-center rounded-xl p-0 overflow-hidden'>
-                        <Image
-                          src={coverPhoto}
-                          alt='coverPhoto'
-                          className='object-cover h-full'
-                        />
-                        <div className='absolute left-0 bottom-3 h-[150px] w-full px-3'>
-                          <Label
-                            htmlFor='message'
-                            className='w-full space-y-2 flex flex-col items-start justify-center'>
-                            <h1 className='text-lg font-bold text-white bg-gradient-to-br from-[#fc5c6c] via-[#86f] to-[#00c2da] p-0.5'>
-                              Story No {index + 1}#
-                            </h1>
-                            <h3 className='text-xl font-bold text-white'>
-                              Story Title
-                            </h3>
-                            <p className='text-white font-light text-start'>
-                              Tell me your story Tell me your story Tell me your
-                              story
-                            </p>
-                          </Label>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className='left-12 max-sm:hidden w-14 h-14' />
-            <CarouselNext className='right-12 max-sm:hidden w-14 h-14' />
-          </Carousel>
-        </div>
+        <PhotoAlbum
+          autoPlayControl={true}
+          loopControl={true}
+          photoAndInstruction={profileSetupInstruction}
+        />
         <div className='mt-12'>
           <Link
             href={"/couple-story"}

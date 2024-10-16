@@ -2,7 +2,8 @@
 "use client";
 import { CreateSukiUser } from "@/app/api/server/action";
 import { gender } from "@/app/constants";
-import { useState } from "react";
+import { countries } from "countries-list";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -28,6 +29,7 @@ const SignUpForm = ({
   userId?: string;
 }) => {
   const [selectedGender, setSelectedGender] = useState("");
+  const [selectedNationality, setSelectedNationality] = useState("");
   const [acceptTermCondition, setAcceptTermCondition] = useState(false);
   const [overEightenSingle, setOverEightenSingle] = useState(false);
   const [month, setMonth] = useState<string>("");
@@ -36,11 +38,19 @@ const SignUpForm = ({
   const [username, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>(userEmail ? userEmail : "");
   const [isError, setIsError] = useState<string>(""); // State to hold any validation error
+
+  useEffect(() => {
+    if (isError !== "") {
+      setAcceptTermCondition(false);
+      setOverEightenSingle(false);
+    }
+  }, [isError]);
   const isFormComplete = (): boolean => {
     return (
       acceptTermCondition === true &&
       overEightenSingle === true &&
       selectedGender !== "" &&
+      selectedNationality !== "" &&
       month !== "" &&
       day !== "" &&
       year !== "" &&
@@ -49,6 +59,13 @@ const SignUpForm = ({
       isError === ""
     );
   };
+
+  const countriesLists = Object.entries(countries)
+    .map(([code, info]) => ({
+      code,
+      ...info,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className='w-2/3 mx-auto px-10 lg:px-32'>
@@ -90,6 +107,31 @@ const SignUpForm = ({
               </SelectContent>
             </Select>
           </div>
+          <div className='z-20'>
+            <Label htmlFor='label'>Nationality</Label>
+            <Select
+              name='nationality'
+              required
+              value={selectedNationality}
+              onValueChange={(value) => setSelectedNationality(value)}>
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder='Select a Nationality' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {countriesLists
+                    .map((country, index) => (
+                      <div key={index}>
+                        <SelectItem value={country.name}>
+                          {country.name}
+                        </SelectItem>
+                      </div>
+                    ))
+                    .sort()}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
           <CustomBirthDayValidationInput
             month={month}
@@ -98,6 +140,8 @@ const SignUpForm = ({
             setDay={setDay}
             year={year}
             setYear={setYear}
+            setIsError={setIsError}
+            isError={isError}
           />
 
           <div className='flex flex-col space-y-2 justify-center'>
@@ -105,7 +149,13 @@ const SignUpForm = ({
               <Checkbox
                 id='terms1'
                 name='checkbox1'
+                disabled={
+                  month === "" || day === "" || year === "" || isError !== ""
+                    ? true
+                    : false
+                }
                 defaultChecked={overEightenSingle}
+                checked={isError !== "" ? false : overEightenSingle}
                 onClick={() => setOverEightenSingle((prev) => !prev)}
               />
               <Label
@@ -119,6 +169,7 @@ const SignUpForm = ({
                 id='terms2'
                 name='checkbox2'
                 defaultChecked={acceptTermCondition}
+                checked={isError !== "" ? false : acceptTermCondition}
                 onClick={() => setAcceptTermCondition((prev) => !prev)}
               />
               <Label

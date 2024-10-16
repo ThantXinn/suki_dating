@@ -17,7 +17,7 @@ const CustomTitle = ({
     <Label
       htmlFor='title'
       className='xl:text-6xl lg:text-5xl font-bold text-3xl text-center max-sm:text-start text-transparent flex flex-col justify-center space-y-3 py-2 max-sm:space-y-1'>
-      <p className={`gradient-text capitalize ${className}`}>{message}</p>
+      <p className={`gradient-text ${className}`}>{message}</p>
       <span
         className={`${
           spanmessage !== undefined ? "block" : "hidden"

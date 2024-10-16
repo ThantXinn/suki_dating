@@ -19,7 +19,7 @@ const CreateAccount = async () => {
       <div className='px-32 lg:px-72 w-full h-full'>
         <Label
           htmlFor='title'
-          className='mt-5 w-full flex flex-col items-center py-14 space-y-5'>
+          className='w-full flex flex-col items-center py-8 space-y-3'>
           <CustomTitle message='Create Suki Account' />
           <span className='text-xs font-light text-center lg:mx-48 mx-14'>
             Looking for a meaningful connection with someone who shares similar

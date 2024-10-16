@@ -1,32 +1,34 @@
 /** @format */
 
 import { livingWithWho } from "@/app/constants";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
+type livingCategoryData = {
+  livingCategory: string;
+};
+
 const LivingWithWho = ({
+  livingCategory,
+  updateMultiFormData,
+  icon,
   isItemSelect,
   setIsItemSelect,
-  selectedItem,
-  setSelectedItem,
-  currentStepIndex,
 }: {
+  livingCategory: string;
+  updateMultiFormData: (fields: Partial<livingCategoryData>) => void;
+  icon: ReactElement;
   isItemSelect: boolean;
   setIsItemSelect: Dispatch<SetStateAction<boolean>>;
-  selectedItem: string[];
-  setSelectedItem: Dispatch<SetStateAction<string[]>>;
-  currentStepIndex: number;
 }) => {
   useEffect(() => {
     const livingWithWhoTitles = livingWithWho.map(({ title }) => title);
-    isItemSelect = livingWithWhoTitles.some((item) =>
-      selectedItem.includes(item),
-    );
+    isItemSelect = livingWithWhoTitles.includes(livingCategory);
     setIsItemSelect(isItemSelect);
-  }, [selectedItem[currentStepIndex]]);
-
+  }, [livingCategory]);
   //console.log(selectedItem);
+  /*
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -69,6 +71,7 @@ const LivingWithWho = ({
       }
     }
   };
+  */
   //console.log("after fired click event value", selectedItem);
 
   return (
@@ -87,12 +90,13 @@ const LivingWithWho = ({
             <Button
               variant={"ghost"}
               className={`flex items-center p-2 gap-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
-                selectedItem?.includes(title)
+                livingCategory === title
                   ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
                   : "cursor-not-allowed"
               }`}
               onClick={() => {
-                handleOnClick(title);
+                //handleOnClick(title);
+                updateMultiFormData({ livingCategory: title });
               }}>
               <p className='text-sm'>{title}</p>
             </Button>

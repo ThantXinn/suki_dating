@@ -4,6 +4,7 @@ import { bodyType } from "@/app/constants";
 import {
   ChangeEvent,
   Dispatch,
+  ReactElement,
   SetStateAction,
   useEffect,
   useState,
@@ -12,84 +13,128 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
+type heightCategoryData = {
+  bodyHeightCategory: {
+    firstInput: string;
+    secondInput: string;
+    thirdInput: string;
+  };
+};
+
 export function Height({
-  firstInput,
-  secondInput,
-  thirdInput,
-  setFirstInput,
-  setSecondInput,
-  setThirdInput,
+  icon,
+  bodyHeightCategory,
+  updateMultiFormData,
 }: {
-  firstInput: string;
-  secondInput: string;
-  thirdInput: string;
-  setFirstInput: Dispatch<SetStateAction<string>>;
-  setSecondInput: Dispatch<SetStateAction<string>>;
-  setThirdInput: Dispatch<SetStateAction<string>>;
+  icon: ReactElement;
+  bodyHeightCategory: {
+    firstInput: string;
+    secondInput: string;
+    thirdInput: string;
+  };
+  updateMultiFormData: (fields: Partial<heightCategoryData>) => void;
 }) {
   const [error, setError] = useState<string>("");
+  const [firstInputState, setFirstInputState] = useState<string>(
+    bodyHeightCategory.firstInput,
+  );
+  const [secondInputState, setSecondInputState] = useState<string>(
+    bodyHeightCategory.secondInput,
+  );
+  const [thirdInputState, setThirdInputState] = useState<string>(
+    bodyHeightCategory.thirdInput,
+  );
+  const showErrorMessage: string =
+    "Please enter a valid height between 100 ~ 270 cm";
+
   const handleFirstInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     if (/^\d{0,1}$/.test(value)) {
-      setFirstInput(value);
+      setFirstInputState(value);
     }
-  };
 
-  const handleFirstInputBlur = () => {
-    // Check if the month is between 1 and 2
-    const numericFirstInput = parseInt(firstInput, 10);
-    if (numericFirstInput < 1 || numericFirstInput > 2) {
-      setError("Please enter a valid height between 100 ~ 250 cm");
-      setFirstInput("");
+    if (Number(value) > 2) {
+      setError(showErrorMessage);
+      setFirstInputState("");
     } else {
-      setError(""); // Clear the error if the input is valid
-      if (firstInput.length === 1) {
-        setFirstInput(firstInput);
+      if (Number(secondInputState) > 7 && Number(value) > 1) {
+        setError(showErrorMessage);
+        setFirstInputState("");
+      } else {
+        if (Number(thirdInputState) >= 1 && Number(value) > 2) {
+          setError(showErrorMessage);
+          setFirstInputState("");
+        } else {
+          if (
+            Number(thirdInputState) > 0 &&
+            Number(secondInputState) >= 7 &&
+            Number(value) >= 2
+          ) {
+            setError(showErrorMessage);
+            setFirstInputState("");
+          } else {
+            setFirstInputState(value);
+            updateMultiFormData({
+              bodyHeightCategory: {
+                firstInput: value,
+                secondInput: secondInputState,
+                thirdInput: thirdInputState,
+              },
+            });
+          }
+        }
       }
     }
   };
+
   const handleSecondInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^\d{0,1}$/.test(value)) {
-      setSecondInput(value);
+      setSecondInputState(value);
+    }
+
+    if (Number(firstInputState) >= 2 && Number(value) > 7) {
+      setError(showErrorMessage);
+      setSecondInputState("");
+    } else {
+      setSecondInputState(value);
+      updateMultiFormData({
+        bodyHeightCategory: {
+          firstInput: firstInputState,
+          secondInput: value,
+          thirdInput: thirdInputState,
+        },
+      });
     }
   };
 
-  const handleSecondInputBlur = () => {
-    // Check if the month is between 1 and 9
-    const numericFirstInput = parseInt(firstInput, 10);
-    if (numericFirstInput < 0 || numericFirstInput > 9) {
-      setError("Please enter a valid height between 100 ~ 250 cm");
-      setSecondInput("");
-    } else {
-      setError(""); // Clear the error if the input is valid
-      if (firstInput.length === 1) {
-        setSecondInput(secondInput);
-      }
-    }
-  };
   const handleThirdInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     if (/^\d{0,1}$/.test(value)) {
-      setThirdInput(value);
+      setThirdInputState(value);
+    }
+
+    if (
+      Number(firstInputState) >= 2 &&
+      Number(secondInputState) >= 7 &&
+      Number(value) > 0
+    ) {
+      setError(showErrorMessage);
+      setThirdInputState("");
+    } else {
+      setThirdInputState(value);
+      updateMultiFormData({
+        bodyHeightCategory: {
+          firstInput: firstInputState,
+          secondInput: secondInputState,
+          thirdInput: value,
+        },
+      });
     }
   };
 
-  const handleThirdInputBlur = () => {
-    // Check if the month is between 1 and 2
-    const numericFirstInput = parseInt(firstInput, 10);
-    if (numericFirstInput < 0 || numericFirstInput > 9) {
-      setError("Please enter a valid height between 100 ~ 250 cm");
-      setThirdInput("");
-    } else {
-      setError(""); // Clear the error if the input is valid
-      if (firstInput.length === 1) {
-        setThirdInput(thirdInput);
-      }
-    }
-  };
   return (
     <div className='absolute flex flex-col items-center w-full h-full'>
       <div className='relative bg-slate-50 w-full'>
@@ -100,68 +145,75 @@ export function Height({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className='relative bg-slate-50 flex justify-center items-center gap-4 px-36 w-full h-full'>
-        <Input
-          id='input-one'
-          name='input-one'
-          type='text'
-          maxLength={1}
-          value={firstInput}
-          onChange={handleFirstInput}
-          onBlur={handleFirstInputBlur}
-          className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
-        />
-        <Input
-          id='input-two'
-          name='input-two'
-          type='text'
-          maxLength={1}
-          value={secondInput}
-          onChange={handleSecondInput}
-          onBlur={handleSecondInputBlur}
-          className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
-        />
-        <Input
-          id='input-three'
-          name='input-three'
-          type='text'
-          maxLength={1}
-          value={thirdInput}
-          onChange={handleThirdInput}
-          onBlur={handleThirdInputBlur}
-          className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
-        />
+      <div className='relative bg-slate-50 flex flex-col justify-center items-center px-36 w-full h-full'>
+        <div className='flex items-center justify-center gap-4'>
+          <Input
+            id='input-one'
+            name='input-one'
+            type='text'
+            maxLength={1}
+            value={bodyHeightCategory.firstInput}
+            onChange={handleFirstInput}
+            className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
+          />
+          <Input
+            id='input-two'
+            name='input-two'
+            type='text'
+            maxLength={1}
+            value={bodyHeightCategory.secondInput}
+            onChange={handleSecondInput}
+            className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
+          />
+          <Input
+            id='input-three'
+            name='input-three'
+            type='text'
+            maxLength={1}
+            value={bodyHeightCategory.thirdInput}
+            onChange={handleThirdInput}
+            className='text-2xl text-center border-b-2 rounded-none border-t-0 border-r-0 border-l-0 shadow-none w-10 border-slate-500/50 focus-visible:ring-0'
+          />
 
-        <Label
-          htmlFor='message'
-          className='text-xl'>
-          cm
-        </Label>
+          <Label
+            htmlFor='message'
+            className='text-xl'>
+            cm
+          </Label>
+        </div>
+        <div className='absolute bottom-10'>
+          {error && <p className='text-red-500 text-xs py-5'>{error}</p>}
+        </div>
       </div>
-      {error && <p className='text-red-500 text-xs'>{error}</p>}
     </div>
   );
 }
 
+// --------------- Body Type ----------------- //
+type bodyCategoryData = {
+  bodyTypeCategory: string;
+};
 export function BodyType({
+  icon,
+  bodyTypeCategory,
+  updateMultiFormData,
   isItemSelect,
   setIsItemSelect,
-  selectedItem,
-  setSelectedItem,
-  currentStepIndex,
 }: {
+  icon: ReactElement;
+  bodyTypeCategory: string;
+  updateMultiFormData: (fields: Partial<bodyCategoryData>) => void;
   isItemSelect: boolean;
   setIsItemSelect: Dispatch<SetStateAction<boolean>>;
-  selectedItem: string[];
-  setSelectedItem: Dispatch<SetStateAction<string[]>>;
-  currentStepIndex: number;
 }) {
   useEffect(() => {
     const bodyTypeTitles = bodyType.map(({ title }) => title);
-    isItemSelect = bodyTypeTitles.some((item) => selectedItem.includes(item));
+    isItemSelect = bodyTypeTitles.includes(bodyTypeCategory);
     setIsItemSelect(isItemSelect);
-  }, [selectedItem[currentStepIndex]]);
+  }, [bodyTypeCategory]);
 
+  /*
+  //console.log(selectedItem.length, selectedItem, currentStepIndex);
   const handleOnClick = (value: string) => {
     const isSelected = selectedItem.includes(value);
     if (isSelected) {
@@ -169,7 +221,7 @@ export function BodyType({
     } else {
       setSelectedItem([...selectedItem, value]);
     }
-    if (selectedItem.length >= 6 && currentStepIndex === 5) {
+    if (selectedItem.length >= 5 && currentStepIndex === 5) {
       //console.log(selectedItem.length, currentStepIndex);
       const myBodyType = bodyType.map((item) => item.title);
       const checkSelectedItemInclude = myBodyType.filter((item) =>
@@ -194,7 +246,7 @@ export function BodyType({
         const newItemsUpdate = [...selectedItem];
 
         //replace final user selected item to previous selected item
-        newItemsUpdate[currentStepIndex + 1] = updateUserClickedItem;
+        newItemsUpdate[currentStepIndex] = updateUserClickedItem;
 
         //after replaced final user selected item to previous selected item
         //console.log(newItemsUpdate, updateUserClickedItem);
@@ -203,6 +255,7 @@ export function BodyType({
       }
     }
   };
+  */
   return (
     <div className='absolute flex flex-col items-center w-full h-full'>
       <div className='relative bg-slate-50 w-full z-10'>
@@ -213,18 +266,18 @@ export function BodyType({
         </Label>
         <hr className='w-full border border-slate-500' />
       </div>
-      <div className=' bg-slate-50 flex flex-wrap items-center justify-center gap-2 py-24 px-28 w-fit h-full'>
+      <div className=' bg-slate-50 flex flex-wrap items-center justify-center gap-2 py-28 px-28 w-fit h-full'>
         {bodyType.map(({ id, title }) => (
           <div key={id}>
             <Button
               variant={"ghost"}
               className={`flex items-center p-2 gap-2 border border-black-100 text-slate-700 hover:border-red-400 hover:cursor-pointer w-fit rounded-full ${
-                selectedItem?.includes(title)
+                bodyTypeCategory === title
                   ? "border-red-400 text-black-100 bg-slate-200 cursor-pointer"
                   : "cursor-not-allowed"
               }`}
               onClick={() => {
-                handleOnClick(title);
+                updateMultiFormData({ bodyTypeCategory: title });
               }}>
               <p className='text-sm'>{title}</p>
             </Button>

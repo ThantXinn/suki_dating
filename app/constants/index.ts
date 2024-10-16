@@ -1,7 +1,19 @@
 import {
-  cafe, camp, chilling, diy, drinking, driving, food, football, game,
-  golf, guitar, gym, hiking, karaoke, live, music, netflix, pets,
-  running, shopping, swimming, theatre, travel, voleenter, yoga, youtube
+  attackOnTitan,
+  baking,
+  basketBall,
+  cafe, camp, carRacing, chilling, cinema, cooking, craft, cycling, dancing, deathNote, demonSlayer, diy, dragonBallZ, drinking, driving, fashion, fishing, food, football, fullmentalAlchemist, game,
+  golf, guitar, gym, hiking, history, hunterXHunter, judo, karaoke, languages, likes, live, love_scout, love_sms, movie, music, myHeroAcadeia, netflix, onePiece, painting, pets,
+  photography,
+  piano,
+  podcast,
+  prefercences,
+  profile,
+  puzzles,
+  readingWriting,
+  running, science, search, shopping, slamDunk, surfing, swimming, tableTennis, technology, theatre, tokyoRevengers, travel, voleenter,
+  volleyBall,
+  waterSport, yoga, youtube
 } from "@/public/assets"
 
 export const navMenus = [
@@ -503,4 +515,221 @@ export const doYouSmoke = [
     id: 5,
     title:"Smoke occasionally"
   },
+]
+
+export const yourIncome = [
+  {
+    id: 0,
+    title:"Not Set"
+  },
+  {
+    id: 1,
+    title:"Do not display"
+  },
+  {
+    id: 2,
+    title:"Less than 2 million yen"
+  },
+  {
+    id: 3,
+    title:"2 million yen to less than 4 million yen"
+  },
+  {
+    id: 4,
+    title:"4 million yen to less than 6 million yen"
+  },
+  {
+    id: 5,
+    title:"6 million yen to less than 8 million yen"
+  },
+  {
+    id: 6,
+    title:"8 million yen to less than 10 million yen"
+  },
+  {
+    id: 7,
+    title: "12 million yen to less than 20 million yen"
+  },
+  {
+    id: 8,
+    title:"Other"
+  },
+]
+
+export const yourEductaion = [
+  {
+    id: 0,
+    title:"Junior college/vocational school/technical college graduate"
+  },
+  {
+    id: 1,
+    title:"High school graduate"
+  },
+  {
+    id: 2,
+    title:"University graduate"
+  },
+  {
+    id: 3,
+    title:"Graduate School"
+  },
+  {
+    id: 4,
+    title:"Other"
+  }
+]
+
+export const selfIntro = [
+  {
+    id: 0,
+    title: "Fun & Adventurous",
+    content:"Hey! I'm [Nick Name] , and I'm all about trying new things, whether it's hiking to a new trail or checking out the latest restaurant in town. I'm always up for an adventure, but I also appreciate a cozy night in with good company. If you love laughing, traveling, and spontaneous weekend getaways, we'll get along great!"
+  },
+  {
+    id: 1,
+    title: "Laid-back & Creative",
+    content:"Hi, I'm [Nick Name]. I'm a laid-back person who enjoys life's simple pleasures—great food, good music, and interesting conversations. When I'm not working on creative projects, you'll find me exploring the city or binge-watching my favorite shows. Looking to meet someone who's genuine, loves to laugh, and isn't afraid to be themselves."
+  },
+  {
+    id: 2,
+    title: "Goal-Oriented & Active",
+    content:"Hey, I'm [Nick Name] ! I'm someone who loves staying active, whether it's hitting the gym, playing sports, or just staying outdoors. I'm ambitious when it comes to my career but always make time for the things and people I care about. I'm looking for someone who's confident, driven, and ready to enjoy life together."
+  },
+]
+
+export const hobbies = [
+  { "id": 0, "title": "Baking",icon:baking },
+  { "id": 1, "title": "Painting",icon:painting },
+  { "id": 2, "title": "Hiking",icon:hiking },
+  { "id": 3, "title": "Cooking",icon:cooking },
+  { "id": 4, "title": "Yoga",icon:yoga },
+  { "id": 5, "title": "Fishing",icon:fishing },
+  { "id": 6, "title": "Swimming",icon:swimming },
+  { "id": 7, "title": "Dancing",icon:dancing},
+  { "id": 8, "title": "Photography",icon:photography },
+  { "id": 9, "title": "Traveling",icon:travel },
+  { "id": 10, "title": "Writing/Reading",icon:readingWriting },
+  { "id": 11, "title": "Driving",icon:driving },
+  { "id": 12, "title": "Camping",icon: camp },
+  { "id": 13, "title": "Puzzles",icon:puzzles },
+  { "id": 14, "title": "Singing",icon:karaoke },
+  { "id": 15, "title": "Running",icon:running },
+  { "id": 16, "title": "Playing Piano",icon:piano },
+  { "id": 17, "title": "Video Gaming",icon:game },
+  { "id": 18, "title": "Playing Guitar",icon:guitar },
+  { "id": 19, "title": "Eating Food", icon:food },
+  { "id": 20, "title": "Shopping",icon:shopping },
+  { "id": 31, "title": "Go to Cafe",icon:cafe },
+  { "id": 22, "title": "Go to Cinema",icon:cinema },
+  { "id": 23, "title": "Theatre",icon:theatre },
+  { "id": 24, "title": "Making DIY",icon:diy },
+  { "id": 25, "title": "Cycling",icon:cycling },
+  { "id": 26, "title": "Art and Crafts",icon:craft },
+  { "id": 27, "title": "Watching Movies",icon:movie },
+  { "id": 28, "title": "Surfing",icon:surfing },
+  { "id": 29, "title": "Water Sports",icon:waterSport },
+]
+
+export const intrest = [
+  { "id": 0, "title": "Technology",icon:technology },
+  { "id": 1, "title": "Fashion",icon:fashion },
+  { "id": 2, "title": "Fitness",icon: gym },
+  { "id": 3, "title": "Movies",icon: movie},
+  { "id": 4, "title": "Music" ,icon: music},
+  { "id": 5, "title": "Art",icon: painting },
+  { "id": 6, "title": "History",icon:history },
+  { "id": 7, "title": "Science",icon:science },
+  { "id": 8, "title": "Travel",icon:travel },
+  { "id": 9, "title": "Watching Youtube",icon:youtube },
+  { "id": 10, "title": "One Piece",icon:onePiece },
+  { "id": 11, "title": "Dragon Ball Z",icon: dragonBallZ },
+  { "id": 12, "title": "Attack on Titan",icon:attackOnTitan },
+  { "id": 13, "title": "My Hero Academia",icon:myHeroAcadeia },
+  { "id": 14, "title": "Demon Slayer",icon:demonSlayer },
+  { "id": 15, "title": "Tokyo Revengers",icon: tokyoRevengers },
+  { "id": 16, "title": "Fullmetal Alchemist",icon: fullmentalAlchemist },
+  { "id": 17, "title": "Death Note",icon:deathNote },
+  { "id": 18, "title": "Hunter x Hunter",icon: hunterXHunter },
+  { "id": 19, "title": "Slam Dunk",icon: slamDunk },
+  { "id": 20, "title": "Soccer/Football",icon: football },
+  { "id": 21, "title": "Formula One Racing", icon:carRacing},
+  { "id": 22, "title": "Basketball",icon:basketBall },
+  { "id": 23, "title": "Golf",icon: golf },
+  { "id": 24, "title": "Volleyball",icon:volleyBall },
+  { "id": 25, "title": "Table Tennis",icon:tableTennis },
+  { "id": 26, "title": "Judo",icon:judo },
+  { "id": 27, "title": "Languages",icon:languages },
+  { "id": 29, "title": "Podcasting",icon: podcast }
+]
+
+export const values = [
+  { "id": 0, "title": "Honesty and Trust" },
+  { "id": 1, "title": "Mutual Respect" },
+  { "id": 2, "title": "Emotional Support" },
+  { "id": 3, "title": "Open Communication" },
+  { "id": 4, "title": "Shared Interests" },
+  { "id": 5, "title": "Loyalty and Faith" },
+  { "id": 6, "title": "Kindness and Care" },
+  { "id": 7, "title": "Empathy and Compassion" },
+  { "id": 8, "title": "Personal Growth" },
+  { "id": 9, "title": "Commitment to Love" },
+  { "id": 10, "title": "Understanding" },
+  { "id": 11, "title": "Family Values" },
+  { "id": 12, "title": "Respect for Space" },
+  { "id": 13, "title": "Work-Life Balance" },
+  { "id": 14, "title": "Physical Affection" },
+  { "id": 15, "title": "Humor and Fun" },
+  { "id": 16, "title": "Equality in Love" },
+  { "id": 17, "title": "Patience and Calm" },
+  { "id": 18, "title": "Romantic Gestures" },
+  { "id": 19, "title": "Shared Ambitions" },
+  { "id": 20, "title": "Trustworthiness" },
+  { "id": 21, "title": "Healthy Boundaries" },
+  { "id": 22, "title": "Generosity of Spirit" },
+  { "id": 23, "title": "Positivity in Life" },
+  { "id": 24, "title": "Adventure Together" },
+  { "id": 25, "title": "Appreciation" },
+  { "id": 26, "title": "Moral Integrity" },
+  { "id": 27, "title": "Emotional Maturity" },
+  { "id": 28, "title": "Respecting Opinions" },
+  { "id": 29, "title": "Passion for Life" }
+]
+
+export const side_bar = [
+  {
+    id: 0,
+    title: "Search",
+    icon:search,
+    href:"#"
+  },
+  {
+    id: 1,
+    title: "Preferences",
+    icon: prefercences,
+    href:"#"
+  },
+  {
+    id: 2,
+    title: "Likes",
+    icon:likes,
+    href:"#"
+  },
+  {
+    id: 3,
+    title: "Messages",
+    icon:love_sms,
+    href:"#"
+  },
+  {
+    id: 4,
+    title: "My Profile",
+    icon:profile,
+    href: "#",
+  },
+  {
+    id: 5,
+    title: "Love Scout",
+    icon:love_scout,
+    href:"#"
+  }
 ]
